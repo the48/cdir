@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# Zero command-line arguments
+if (( $# == 0 ))
+then
+        # No help just yet btw
+        echo -ne "cdir: missing operand\nTry 'cdir --help' for more information.\n"
+        exit 1
+fi
+
+# Directory name
+dir=$1
+
+# Main
+if [ -d $dir ]
+then
+        echo -ne "cdir: cannot create directory ‘$dir’: File exists\n"
+        exit 1
+else
+        mkdir $dir
+        cd $dir
+
+        # Lazy so drops a new shell
+        $SHELL
+fi
+
+# When cd is run inside a script, a shell child process is spawned, or something like that. 
+# Essentially, each shell script runs in a subshell with its own context of a current directory. 
+# On exit, you are thrown back into the interactive shell; therefore the subshell process did run with all of its effects, save for the vital cd command. 
+# There are ways to work around this behaviour, which will be included. For now, enjoy a new shell session :)
